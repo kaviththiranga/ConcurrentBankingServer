@@ -8,10 +8,9 @@ namespace ConcurrentBankingServer.Data
 {
     interface AccountDAO
     {
-        public List<Account> getAccounts();
+        List<Account> getAccounts();
 
-        public bool athenticate(String accNo, String pin);
+        Account getAccountByAccNo(String accNo);
 
-        public Account getAccountByAccNo(String accNo);
     }
 }

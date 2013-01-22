@@ -5,8 +5,8 @@ using System.Text;
 
 namespace ConcurrentBankingServer.Data
 {
-    class AccountDAOImplementation : AccountDAO
+    class AccountDAOImplementation
     {
-        
+       
     }
 }

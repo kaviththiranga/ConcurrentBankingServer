@@ -5,7 +5,8 @@ using System.Text;
 
 namespace ConcurrentBankingServer.Model
 {
-    class DebitCard
+    public class DebitCard
     {
+
     }
 }

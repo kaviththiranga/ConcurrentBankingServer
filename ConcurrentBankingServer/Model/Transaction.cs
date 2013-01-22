@@ -5,7 +5,29 @@ using System.Text;
 
 namespace ConcurrentBankingServer.Model
 {
-    class Transaction
+    public class Transaction
     {
+        private String transactionType;
+
+        public String Type {
+            get { return transactionType; }
+            set { transactionType = value; }
+        }
+
+        private double amount;
+
+        public double Amount {
+            get { return amount; }
+            set { amount = value; }
+        }
+
+        private double remainingBalance;
+
+
+        public double Balance
+        {
+            get { return remainingBalance; }
+        }
+
     }
 }
