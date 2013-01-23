@@ -17,32 +17,84 @@ namespace ConcurrentBankingServer.Data
 
         public List<Account> getAccounts() {
 
-            return new List<Account>();  
+            return allAcounts;  
             
         }
 
         public Account getAccountByAccNo(String accNo) {
 
-            return new Account();
+           foreach(Account a in allAcounts){
+               if (a.AccountNumber.Equals(accNo)) {
+                   return a;
+               }
+           }
+            return null;
+        }
+
+        public void loadAccounts() {
+            /*allAcounts = new List<Account>();
+            Account ac = new Account("AC00001", "1001");
+            ac.executeTransaction(new Transaction("credit", 1000));
+            allAcounts.Add(ac);
+
+            ac = new Account("AC00002", "1002");
+            ac.executeTransaction(new Transaction("credit", 1000));
+            ac.executeTransaction(new Transaction("debit", 555));
+            allAcounts.Add(ac);
+            ac = new Account("AC00003", "1003");
+            ac.executeTransaction(new Transaction("credit", 1000));
+            allAcounts.Add(ac);
+            ac = new Account("AC00004", "1004");
+            ac.executeTransaction(new Transaction("credit", 1000));
+            allAcounts.Add(ac);
+            ac = new Account("AC00005", "1005");
+            ac.executeTransaction(new Transaction("credit", 1000));
+            allAcounts.Add(ac);*/
+
+            StreamReader _wr = new StreamReader(filePath);
+
+            while (!_wr.EndOfStream)
+            {
+                //Read one line at a time
+                string objectStream = _wr.ReadLine();
+                //Convert the Base64 string into byte array
+                byte[] memorydata = Convert.FromBase64String(objectStream);
+                MemoryStream rs = new MemoryStream(memorydata);
+                BinaryFormatter sf = new BinaryFormatter();
+                //Create object using BinaryFormatter
+                Account objResult = (Account)sf.Deserialize(rs);
+
+                allAcounts.Add(objResult);
+            }
         
         }
 
-        public void loadAccounts() { 
-        
-        
+        public void readFromFile() {
+
         }
         public void saveAccounts() {
 
-            Stream stream = File.Open(filePath, FileMode.Create);
+            /*Stream stream = File.Open(filePath, FileMode.Create);
             BinaryFormatter bFormatter = new BinaryFormatter();
 
-            for (int i = 0; i < allAcounts.Count; i++ )
+            for (int i = 0; i < allAcounts.Count; i++)
             {
 
                 bFormatter.Serialize(stream, allAcounts.ElementAt(i));
 
             }
-            stream.Close();
+            stream.Close();*/
+            StreamWriter _wr = new StreamWriter(filePath);
+            MemoryStream memoryStream = new MemoryStream();
+            BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+            for (int i = 0; i < allAcounts.Count; i++)
+            {
+                binaryFormatter.Serialize(memoryStream, allAcounts.ElementAt(i));
+                string str = System.Convert.ToBase64String(memoryStream.ToArray());
+
+                _wr.WriteLine(str);
+            }
         }
     }
 }

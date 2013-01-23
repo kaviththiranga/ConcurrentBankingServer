@@ -36,7 +36,13 @@ namespace ConcurrentBankingServer.Model
         private double currentBalance;
 
         public double Balance {
-            get { return currentBalance; }
+            get 
+            {
+                lock (this)
+                {
+                    return currentBalance;
+                }
+            }
         }
 
         private List<Transaction> recentTransactions;
@@ -56,13 +62,21 @@ namespace ConcurrentBankingServer.Model
         }
 
         public bool executeTransaction(Transaction t) {
-
+            
             if (t.Type.Equals("debit")) {
-                return debitAccount(t.Amount);
+                if (debitAccount(t.Amount))
+                {
+                    addToTransactions(t);
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
             else if (t.Type.Equals("credit"))
             {
                 creditAccount(t.Amount);
+                addToTransactions(t);
                 return true;
             }
 
@@ -71,19 +85,25 @@ namespace ConcurrentBankingServer.Model
 
         private bool debitAccount(double amount) {
 
-            if (currentBalance > amount)
+            lock (this)
             {
-                currentBalance -= amount;
-                return true;
-            }
-            else {
-                return false;
+                if (currentBalance > amount)
+                {
+                    currentBalance -= amount;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
         private void creditAccount(double amount) {
-
-            currentBalance += amount;        
+            lock (this)
+            {
+                currentBalance += amount;
+            }
         }
         private void addToTransactions(Transaction t) {
 

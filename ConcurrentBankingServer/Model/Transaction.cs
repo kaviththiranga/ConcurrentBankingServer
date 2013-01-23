@@ -30,5 +30,10 @@ namespace ConcurrentBankingServer.Model
             get { return remainingBalance; }
         }
 
+        public Transaction(String type, double amount) {
+
+            transactionType = type;
+            this.amount = amount;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ConcurrentBankingServer.Data;
+using ConcurrentBankingServer.Model;
 
 namespace ConcurrentBankingServer.Service
 {
@@ -16,7 +17,14 @@ namespace ConcurrentBankingServer.Service
         }
         public bool authenticateTransaction(string accNo, string pin) {
 
-            return true;
+            Account ac = accountDAO.getAccountByAccNo(accNo);
+
+            if (ac != null && ac.Pin.Equals(pin))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

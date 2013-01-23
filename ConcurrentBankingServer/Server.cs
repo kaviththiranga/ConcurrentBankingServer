@@ -39,6 +39,12 @@ namespace ConcurrentBankingServer
 
         public Server(Log logger) {
             this.logger = logger;
+
+            accountDAO = new AccountDAOImplementation();
+            accountDAO.loadAccounts();
+            authService = new AuthenticationService(accountDAO);
+            accountService = new AccoutService(accountDAO);
+
             logger("Server Started");
         }
 
