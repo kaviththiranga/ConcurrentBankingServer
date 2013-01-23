@@ -6,11 +6,14 @@ using ConcurrentBankingServer.Model;
 
 namespace ConcurrentBankingServer.Data
 {
-    interface AccountDAO
+    public interface AccountDAO
     {
         List<Account> getAccounts();
 
         Account getAccountByAccNo(String accNo);
 
+        void saveAccounts();
+
+        void loadAccounts();
     }
 }

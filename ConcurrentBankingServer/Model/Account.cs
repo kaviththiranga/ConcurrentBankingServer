@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ConcurrentBankingServer.Model
 {
-    [Serializable]
+    [Serializable()]
     public class Account
     {
         private String accountNumber;
@@ -15,6 +15,15 @@ namespace ConcurrentBankingServer.Model
             get { return accountNumber; }
             set { AccountNumber = value; }
         }
+
+        private String pinCode;
+
+        public String Pin
+        {
+            get { return pinCode; }
+            set { pinCode = value; }
+        }
+
 
         private String accountHolder;
 

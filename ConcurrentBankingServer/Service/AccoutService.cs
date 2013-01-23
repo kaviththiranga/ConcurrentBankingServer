@@ -6,17 +6,13 @@ using ConcurrentBankingServer.Data;
 
 namespace ConcurrentBankingServer.Service
 {
-    public class AuthenticationService
+    public class AccoutService
     {
         protected AccountDAO accountDAO;
 
-
-        public AuthenticationService(AccountDAO dao) {
+        public AccoutService(AccountDAO dao)
+        {
             accountDAO = dao;
-        }
-        public bool authenticateTransaction(string accNo, string pin) {
-
-            return true;
         }
     }
 }
