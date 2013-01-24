@@ -28,6 +28,7 @@ namespace ConcurrentBankingServer.Model
         public double Balance
         {
             get { return remainingBalance; }
+            set { remainingBalance = value; }
         }
 
         public Transaction(String type, double amount) {

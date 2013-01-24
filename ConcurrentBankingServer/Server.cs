@@ -27,26 +27,24 @@ namespace ConcurrentBankingServer
             get { return accountService; }
         }
 
-        private AccountDAO accountDAO;
+        public AccountDAO accountDAO;
 
 
-        public Server() {
-            accountDAO = new AccountDAOImplementation();
-            accountDAO.loadAccounts();
-            authService = new AuthenticationService(accountDAO);
-            accountService = new AccoutService(accountDAO);
-        }
+        public Server(Log logger)
+        {
 
-        public Server(Log logger) {
             this.logger = logger;
-
-            accountDAO = new AccountDAOImplementation();
-            accountDAO.loadAccounts();
+            accountDAO = new AccountDAOImplementation(this.logger);
+            accountDAO.loadAccounts();           
             authService = new AuthenticationService(accountDAO);
-            accountService = new AccoutService(accountDAO);
+            accountService = new AccoutService(accountDAO, this.logger);
 
-            logger("Server Started");
+            this.logger("Server Started");
         }
+
+        /*public Server(Log logger) : this() {
+            this.logger += logger;
+        }*/
 
         public void terminate() {
             logger("Saving all the accounts back to file.");
@@ -54,6 +52,10 @@ namespace ConcurrentBankingServer
             logger("Saving accounts successfull.");
             logger("Server terminated sucessfully.");
         
+        }
+
+        public void log(String logMsg) {
+            System.Console.WriteLine((DateTime.Now).ToString() + " : " + logMsg + "\n");
         }
     }
 }

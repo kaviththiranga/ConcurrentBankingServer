@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace ConcurrentBankingServer.Model
 {
     [Serializable()]
     public class Account
     {
+        // This is used to signal the service classes once the lock on the
+        // Balance mutator and getter methods is being released
+        [NonSerialized()]
+        public AutoResetEvent _isAvailableLockedData;
+
         private String accountNumber;
+
 
         public String AccountNumber
         {
@@ -38,10 +45,17 @@ namespace ConcurrentBankingServer.Model
         public double Balance {
             get 
             {
+                double balance;
+                // Prevents modification of balance while reading the balance
                 lock (this)
                 {
-                    return currentBalance;
+                    balance = currentBalance;
                 }
+
+                //Signals waiting threads
+                _isAvailableLockedData.Set();
+
+                return balance;
             }
         }
 
@@ -53,12 +67,14 @@ namespace ConcurrentBankingServer.Model
 
         public Account() {
             recentTransactions = new List<Transaction>();
+            // Creates AutoResetEvent and sets initial state to signalled
+            _isAvailableLockedData = new AutoResetEvent(true);
         }
-        public Account(String aH, String aN) {
+        public Account(String aH, String aN, String pin) : this() {
 
             accountHolder = aH;
             accountNumber = aN;
-            recentTransactions = new List<Transaction>();
+            this.pinCode = pin;
         }
 
         public bool executeTransaction(Transaction t) {
@@ -66,17 +82,22 @@ namespace ConcurrentBankingServer.Model
             if (t.Type.Equals("debit")) {
                 if (debitAccount(t.Amount))
                 {
+                    t.Balance = Balance;
                     addToTransactions(t);
                     return true;
                 }
                 else {
                     return false;
                 }
+
             }
             else if (t.Type.Equals("credit"))
             {
                 creditAccount(t.Amount);
+
+                t.Balance = Balance;
                 addToTransactions(t);
+                
                 return true;
             }
 
@@ -85,25 +106,32 @@ namespace ConcurrentBankingServer.Model
 
         private bool debitAccount(double amount) {
 
+            bool success = false;
             lock (this)
             {
                 if (currentBalance > amount)
                 {
+                    Thread.Sleep(1000);
                     currentBalance -= amount;
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    success = true;
                 }
             }
+
+            // Signals waiting threads
+           _isAvailableLockedData.Set();
+
+            return success;
         }
 
         private void creditAccount(double amount) {
             lock (this)
             {
+                Thread.Sleep(1000);
                 currentBalance += amount;
             }
+
+            // Signals waiting threads
+            _isAvailableLockedData.Set();
         }
         private void addToTransactions(Transaction t) {
 
