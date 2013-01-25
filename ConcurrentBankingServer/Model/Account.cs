@@ -77,17 +77,17 @@ namespace ConcurrentBankingServer.Model
             this.pinCode = pin;
         }
 
-        public bool executeTransaction(Transaction t) {
+        public Transaction executeTransaction(Transaction t) {
             
             if (t.Type.Equals("debit")) {
                 if (debitAccount(t.Amount))
                 {
                     t.Balance = Balance;
                     addToTransactions(t);
-                    return true;
+                    return t;
                 }
                 else {
-                    return false;
+                    return t;
                 }
 
             }
@@ -98,10 +98,10 @@ namespace ConcurrentBankingServer.Model
                 t.Balance = Balance;
                 addToTransactions(t);
                 
-                return true;
+                return t;
             }
 
-            return false;
+            return t;
         }
 
         private bool debitAccount(double amount) {

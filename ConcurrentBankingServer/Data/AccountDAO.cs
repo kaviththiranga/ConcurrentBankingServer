@@ -12,8 +12,14 @@ namespace ConcurrentBankingServer.Data
 
         Account getAccountByAccNo(String accNo);
 
+        DebitCard getCardByCardNo(String cardNo);
+
         void saveAccounts();
 
+        void saveCards();
+
         void loadAccounts();
+
+        void loadCards();
     }
 }

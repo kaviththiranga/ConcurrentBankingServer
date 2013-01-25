@@ -35,7 +35,8 @@ namespace ConcurrentBankingServer
 
             this.logger = logger;
             accountDAO = new AccountDAOImplementation(this.logger);
-            accountDAO.loadAccounts();           
+            accountDAO.loadAccounts();
+            accountDAO.loadCards();
             authService = new AuthenticationService(accountDAO);
             accountService = new AccoutService(accountDAO, this.logger);
 
@@ -49,6 +50,7 @@ namespace ConcurrentBankingServer
         public void terminate() {
             logger("Saving all the accounts back to file.");
             accountDAO.saveAccounts();
+            accountDAO.saveCards();
             logger("Saving accounts successfull.");
             logger("Server terminated sucessfully.");
         
