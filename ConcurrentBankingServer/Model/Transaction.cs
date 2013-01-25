@@ -31,6 +31,20 @@ namespace ConcurrentBankingServer.Model
             set { remainingBalance = value; }
         }
 
+        private bool sucess = false;
+
+        public bool Success {
+            get { return sucess; }
+            set { sucess = value; }
+        }
+
+        private String notes;
+        public String Notes
+        {
+            get { return notes; }
+            set { notes = value; }
+        }
+
         public Transaction(String type, double amount) {
 
             transactionType = type;

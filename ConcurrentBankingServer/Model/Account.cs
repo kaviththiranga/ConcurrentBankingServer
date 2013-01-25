@@ -83,6 +83,7 @@ namespace ConcurrentBankingServer.Model
                 if (debitAccount(t.Amount))
                 {
                     t.Balance = Balance;
+                    t.Success = true;
                     addToTransactions(t);
                     return t;
                 }
@@ -96,6 +97,7 @@ namespace ConcurrentBankingServer.Model
                 creditAccount(t.Amount);
 
                 t.Balance = Balance;
+                t.Success = true;
                 addToTransactions(t);
                 
                 return t;

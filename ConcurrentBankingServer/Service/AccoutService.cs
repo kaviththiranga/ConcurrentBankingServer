@@ -25,16 +25,22 @@ namespace ConcurrentBankingServer.Service
 
             if (authenticateTransaction(cardNo, pin))
             {
+                if (accountDAO.getAccountByAccNo(accNo)._isAvailableLockedData.WaitOne()) {
 
-                logger("Thread : " + Thread.CurrentThread.Name + " : Waiting till the lock in Account released to do the transaction for Ac : " + accNo);
-
-                accountDAO.getAccountByAccNo(accNo)._isAvailableLockedData.WaitOne();
+                    logger("Thread : " + Thread.CurrentThread.Name + " : Waiting till the lock in Account released to do the transaction for Ac : " + accNo);
+                }
 
                 logger("Thread : " + Thread.CurrentThread.Name + " : Signal received to confirm that the lock has been released. Doing transaction for  Ac : " + accNo);
                 
-                return accountDAO.getAccountByAccNo(accNo).executeTransaction(tr);
+                tr = accountDAO.getAccountByAccNo(accNo).executeTransaction(tr);
+
+                if (!tr.Success) {
+                    logger("Thread : " + Thread.CurrentThread.Name + " : Error while excuting the transaction for Account : " + accNo);
+                }
             }
             //throw new Exception("Failed to authenticate");
+
+            return tr;
         }
 
         public double getBalance(String cardNo, String pin, String accNo) {
