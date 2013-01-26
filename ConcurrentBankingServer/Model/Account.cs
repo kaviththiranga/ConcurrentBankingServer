@@ -113,7 +113,7 @@ namespace ConcurrentBankingServer.Model
             {
                 if (currentBalance > amount)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
                     currentBalance -= amount;
                     success = true;
                 }
@@ -128,7 +128,7 @@ namespace ConcurrentBankingServer.Model
         private void creditAccount(double amount) {
             lock (this)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
                 currentBalance += amount;
             }
 

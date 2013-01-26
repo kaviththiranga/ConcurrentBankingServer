@@ -25,10 +25,10 @@ namespace ConcurrentBankingServer.Service
 
             if (authenticateTransaction(cardNo, pin))
             {
-                if (accountDAO.getAccountByAccNo(accNo)._isAvailableLockedData.WaitOne()) {
+                accountDAO.getAccountByAccNo(accNo)._isAvailableLockedData.WaitOne();
 
                     logger("Thread : " + Thread.CurrentThread.Name + " : Waiting till the lock in Account released to do the transaction for Ac : " + accNo);
-                }
+                
 
                 logger("Thread : " + Thread.CurrentThread.Name + " : Signal received to confirm that the lock has been released. Doing transaction for  Ac : " + accNo);
                 
