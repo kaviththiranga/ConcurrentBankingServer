@@ -96,6 +96,7 @@ namespace ConcurrentBankingServer.Data
             foreach (Account a in allAcounts)
             {
                 a._isAvailableLockedData = new System.Threading.AutoResetEvent(true);
+                a._locker = new Object(); ;
                 
             }
 

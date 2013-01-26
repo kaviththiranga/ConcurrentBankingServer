@@ -14,6 +14,9 @@ namespace ConcurrentBankingServer.Model
         [NonSerialized()]
         public AutoResetEvent _isAvailableLockedData;
 
+        [NonSerialized()]
+        public Object _locker = new Object();
+
         private String accountNumber;
 
 
@@ -47,7 +50,7 @@ namespace ConcurrentBankingServer.Model
             {
                 double balance;
                 // Prevents modification of balance while reading the balance
-                lock (this)
+                lock (_locker)
                 {
                     balance = currentBalance;
                 }
@@ -109,7 +112,7 @@ namespace ConcurrentBankingServer.Model
         private bool debitAccount(double amount) {
 
             bool success = false;
-            lock (this)
+            lock (_locker)
             {
                 if (currentBalance > amount)
                 {
@@ -126,7 +129,7 @@ namespace ConcurrentBankingServer.Model
         }
 
         private void creditAccount(double amount) {
-            lock (this)
+            lock (_locker)
             {
                 Thread.Sleep(3000);
                 currentBalance += amount;

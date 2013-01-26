@@ -43,6 +43,7 @@
     <Compile Include="Data\AccountDAO.cs" />
     <Compile Include="Data\AccountDAOImplementation.cs" />
     <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\BackgroundWorkerArg.cs" />
     <Compile Include="Model\DebitCard.cs" />
     <Compile Include="Model\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
