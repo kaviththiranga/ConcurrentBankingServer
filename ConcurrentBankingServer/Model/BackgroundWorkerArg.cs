@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ConcurrentBankingServer.Service;
 
 namespace ConcurrentBankingServer.Model
 {
@@ -36,6 +37,14 @@ namespace ConcurrentBankingServer.Model
 
             get { return tr; }
             set { tr = value;}
+        }
+
+        private AccoutService.UpdateProgress progresser;
+
+        public AccoutService.UpdateProgress ProgressCallBack {
+
+            get { return progresser; }
+            set { progresser = value; }
         }
     }
 }

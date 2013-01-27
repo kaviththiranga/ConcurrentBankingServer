@@ -33,6 +33,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,11 +47,23 @@
     <Compile Include="Model\Account.cs" />
     <Compile Include="Model\BackgroundWorkerArg.cs" />
     <Compile Include="Model\DebitCard.cs" />
+    <Compile Include="Model\ExeTransacBackgResult.cs" />
     <Compile Include="Model\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="ServerLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerLog.Designer.cs">
+      <DependentUpon>ServerLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Service\AccoutService.cs" />
     <Compile Include="Service\AuthenticationService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ServerLog.resx">
+      <DependentUpon>ServerLog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
