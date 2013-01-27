@@ -40,6 +40,9 @@ namespace ConcurrentBankingServer.Service
                 
                 tr = accountDAO.getAccountByAccNo(accNo).executeTransaction(tr);
 
+                logger("Thread : " + Thread.CurrentThread.Name
+                   + " : Completed  "
+                               + tr.Type + " transaction for  Ac : " + accNo);
                 if (!tr.Success) {
                     logger("Thread : " + Thread.CurrentThread.Name +
                         " : Error while excuting the transaction for Account : " + accNo);
@@ -122,6 +125,7 @@ namespace ConcurrentBankingServer.Service
 
             if (ac != null && ac.Pin == pin)
             {
+                logger("Authentication for Card : " + cardNo + " successfull.");
                 return true;
             }
 
