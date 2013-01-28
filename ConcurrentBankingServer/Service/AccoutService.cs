@@ -68,18 +68,18 @@ namespace ConcurrentBankingServer.Service
                 //_bw.ReportProgress(33);
                 
                 // Wait till the lock is being released
-                //accountDAO.getAccountByAccNo(args.AccountNumber)._isAvailableLockedData.WaitOne();
+                accountDAO.getAccountByAccNo(args.AccountNumber)._isAvailableLockedData.WaitOne();
                 logger("Thread");
                 // Abort the transaction if a cancel reqeust issued by user, Else proceed. Operation canoot be canceled after this point    
                 if (_bw.CancellationPending) { e.Cancel = true; return; }
 
-                _bw.ReportProgress(44);
+                //_bw.ReportProgress(44);
                 
                 // Execute the transaction on acccount
                 result.Transaction = accountDAO.getAccountByAccNo(args.AccountNumber).executeTransaction(args.Transaction);
                 logger("Thread");
                 logger("Thread");
-                _bw.ReportProgress(100);
+                //_bw.ReportProgress(100);
                 if (!result.Transaction.Success)
                 {
                     logger("Thread : " + Thread.CurrentThread.Name +
@@ -92,7 +92,7 @@ namespace ConcurrentBankingServer.Service
                 result.Success = true;
             }
             else{
-                _bw.ReportProgress(100);
+                //_bw.ReportProgress(100);
                 result.Success = false;
                 result.Msg = "Failed to authenticate ";
             }
