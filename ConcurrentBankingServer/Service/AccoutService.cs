@@ -55,8 +55,8 @@ namespace ConcurrentBankingServer.Service
 
         public void executeTransaction2(object sender, DoWorkEventArgs e)
         {
-            BackgroundWorker _bw = (BackgroundWorker)sender;
-            BackgroundWorkerArg args = (BackgroundWorkerArg) e.Argument;
+            BackgroundWorker _bw = sender as BackgroundWorker;
+            BackgroundWorkerArg args = e.Argument as BackgroundWorkerArg;
             ExeTransacBackgResult result = new ExeTransacBackgResult();
 
             if (authenticateTransaction(args.CardNumber, args.Pin))
@@ -65,11 +65,11 @@ namespace ConcurrentBankingServer.Service
                                     + args.Transaction.Type + " transaction for Ac : " + args.AccountNumber);
 
                 logger("Thread");
-                _bw.ReportProgress(33);
+                //_bw.ReportProgress(33);
                 
                 // Wait till the lock is being released
                 //accountDAO.getAccountByAccNo(args.AccountNumber)._isAvailableLockedData.WaitOne();
-                
+                logger("Thread");
                 // Abort the transaction if a cancel reqeust issued by user, Else proceed. Operation canoot be canceled after this point    
                 if (_bw.CancellationPending) { e.Cancel = true; return; }
 
@@ -77,7 +77,7 @@ namespace ConcurrentBankingServer.Service
                 
                 // Execute the transaction on acccount
                 result.Transaction = accountDAO.getAccountByAccNo(args.AccountNumber).executeTransaction(args.Transaction);
-
+                logger("Thread");
                 logger("Thread");
                 _bw.ReportProgress(100);
                 if (!result.Transaction.Success)

@@ -50,7 +50,7 @@ namespace ConcurrentBankingServer.Model
             {
                 double balance;
                 // Prevents modification of balance while reading the balance
-                lock (_locker)
+                lock (this)
                 {
                     balance = currentBalance;
                 }
@@ -112,7 +112,7 @@ namespace ConcurrentBankingServer.Model
         private bool debitAccount(double amount) {
 
             bool success = false;
-            lock (_locker)
+            lock (this)
             {
                 if (currentBalance > amount)
                 {
@@ -129,7 +129,7 @@ namespace ConcurrentBankingServer.Model
         }
 
         private void creditAccount(double amount) {
-            lock (_locker)
+            lock (this)
             {
                 Thread.Sleep(3000);
                 currentBalance += amount;
